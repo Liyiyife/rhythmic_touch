@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <title>RhythmTouch Data Management</title>
+  <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+  <main class="admin-shell">
+    <section id="login-view" class="login-view">
+      <form id="login-form" class="login-card" autocomplete="on">
+        <div class="brand-mark" aria-hidden="true">RT</div>
+        <p class="eyebrow">RHYTHMTOUCH</p>
+        <h1>Study Data Management</h1>
+        <p class="muted">Sign in to view study records stored in SQLite. This dashboard provides read-only access and data export.</p>
+
+        <label for="admin-username">Administrator username</label>
+        <input id="admin-username" name="username" type="text" autocomplete="username" required>
+
+        <label for="admin-password">Administrator password</label>
+        <input id="admin-password" name="password" type="password" autocomplete="current-password" required>
+
+        <p id="login-error" class="form-error" role="alert" hidden></p>
+        <button id="login-button" class="primary-button" type="submit">Sign in</button>
+      </form>
+    </section>
+
+    <section id="dashboard-view" class="dashboard-view" hidden>
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">RHYTHMTOUCH</p>
+          <h1>Study Data Management</h1>
+        </div>
+        <div class="topbar-actions">
+          <span id="live-status" class="live-status"><i></i> Live data</span>
+          <button id="refresh-all" class="secondary-button" type="button">Refresh now</button>
+          <button id="logout-button" class="ghost-button" type="button">Sign out</button>
+        </div>
+      </header>
+
+      <div class="update-row">
+        <span id="updated-at">Not refreshed yet</span>
+        <label class="auto-refresh">
+          <input id="auto-refresh" type="checkbox" checked>
+          Refresh every 10 seconds
+        </label>
+      </div>
+
+      <section class="stats-grid" aria-label="Study overview">
+        <article class="stat-card">
+          <span>Participants</span>
+          <strong id="stat-users">—</strong>
+          <small>Registered accounts</small>
+        </article>
+        <article class="stat-card">
+          <span>Study tasks</span>
+          <strong id="stat-trials">—</strong>
+          <small>Task records</small>
+        </article>
+        <article class="stat-card">
+          <span>Input attempts</span>
+          <strong id="stat-attempts">—</strong>
+          <small>Attempt records</small>
+        </article>
+        <article class="stat-card">
+          <span>Questionnaire responses</span>
+          <strong id="stat-surveys">—</strong>
+          <small>NASA-TLX / condition ratings</small>
+        </article>
+        <article class="stat-card accent-card">
+          <span>Task success rate</span>
+          <strong id="stat-success">—</strong>
+          <small>Completed tasks</small>
+        </article>
+        <article class="stat-card accent-card">
+          <span>Mean similarity</span>
+          <strong id="stat-similarity">—</strong>
+          <small>All scored attempts</small>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Participant progress</p>
+            <h2>Participant progress</h2>
+          </div>
+          <span class="panel-note"><strong id="formal-trial-count">14</strong> study tasks</span>
+        </div>
+        <div class="table-wrap participant-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Participant</th><th>Progress</th><th>Successful tasks</th><th>Mean similarity</th><th>Last activity</th>
+              </tr>
+            </thead>
+            <tbody id="participant-rows"></tbody>
+          </table>
+          <p id="participant-empty" class="empty-state" hidden>No participant data.</p>
+        </div>
+      </section>
+
+      <section class="panel data-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Database records</p><h2>Raw data</h2>
+          </div>
+          <button id="export-button" class="secondary-button" type="button">Export current CSV</button>
+        </div>
+
+        <form id="filter-form" class="filters">
+          <label>
+            Table
+            <select id="table-filter" name="table">
+              <option value="users">users · participants</option>
+              <option value="trials" selected>trials · tasks</option>
+              <option value="attempts">attempts · attempts</option>
+              <option value="actions">actions · raw actions</option>
+              <option value="survey_responses">survey_responses · questionnaires</option>
+            </select>
+          </label>
+          <label>
+            Participant
+            <select id="user-filter" name="user_id">
+              <option value="">All participants</option>
+            </select>
+          </label>
+          <label>
+            Presented block number
+            <select id="block-filter" name="block_number">
+              <option value="">All blocks</option><option value="1">Presented block 1</option><option value="2">Presented block 2</option><option value="3">Presented block 3</option>
+            </select>
+          </label>
+          <label class="search-field">
+            Search
+            <input id="search-filter" name="search" type="search" placeholder="Username, ID, or pattern">
+          </label>
+          <button class="primary-button compact-button" type="submit">Apply filters</button>
+        </form>
+
+        <div id="data-message" class="data-message" role="status"></div>
+        <div class="table-wrap data-wrap">
+          <table id="data-table">
+            <thead id="data-head"></thead>
+            <tbody id="data-body"></tbody>
+          </table>
+          <p id="data-empty" class="empty-state" hidden>No records match the current filters.</p>
+        </div>
+
+        <footer class="pagination">
+          <span id="page-summary">0 records</span>
+          <div>
+            <button id="previous-page" class="ghost-button" type="button">Previous</button>
+            <button id="next-page" class="ghost-button" type="button">Next</button>
+          </div>
+        </footer>
+      </section>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script src="/admin.js" defer></script>
+</body>
+</html>

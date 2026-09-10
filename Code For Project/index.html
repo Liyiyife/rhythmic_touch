@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#0d1016">
+  <title>RhythmTouch Study</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header><div><span class="eyebrow">Rhythm Touch Input Study</span><h1>RhythmTouch</h1></div></header>
+    <nav id="studySteps" class="stepper hidden" aria-label="Study progress">
+      <div data-stage="instructions"><b>1</b><span>Instructions</span></div>
+      <div data-stage="practice"><b>2</b><span>Practice</span></div>
+      <div data-stage="block-1"><b>3</b><span>Block 1</span></div>
+      <div data-stage="block-2"><b>4</b><span>Block 2</span></div>
+      <div data-stage="block-3"><b>5</b><span>Block 3</span></div>
+      <div data-stage="complete"><b>6</b><span>Finish</span></div>
+    </nav>
+
+    <section id="authView" class="view">
+      <div class="card hero"><span class="eyebrow">Welcome</span><h2>Start the study</h2><p>Create a participant account, or sign in to continue an existing session.</p></div>
+      <form id="authForm" class="card form-card">
+        <label>Username<input id="username" autocomplete="username" required></label>
+        <label>Password<input id="password" type="password" autocomplete="current-password" required></label>
+        <p id="authError" class="error" role="alert"></p>
+        <button class="primary" type="submit">Sign in</button>
+        <button id="registerBtn" class="secondary" type="button">Create account</button>
+      </form>
+    </section>
+
+    <section id="instructionsView" class="view hidden">
+      <div class="card hero"><span class="eyebrow">Study instructions</span><h2>What you will do</h2><p>You will complete two practice tasks followed by three study blocks. Practice results are not included in the study data.</p></div>
+      <div class="flow-list">
+        <article class="card flow-item"><b>1</b><div><h3>Feedback modality</h3><p>Four fixed conditions: no feedback, visual feedback, audio feedback, and haptic feedback.</p></div></article>
+        <article class="card flow-item"><b>2</b><div><h3>Rhythmic complexity</h3><p>Two fixed conditions: simple rhythm and complex rhythm.</p></div></article>
+        <article class="card flow-item"><b>3</b><div><h3>Input action type</h3><p>Two fixed conditions: tap-only and tap-and-swipe.</p></div></article>
+      </div>
+      <div class="card note"><p>The order of the three study blocks is counterbalanced by participant number. You will complete a short rating after each condition and six NASA-TLX ratings after each block.</p></div>
+      <button id="continueToPracticeBtn" class="primary wide">Continue to practice</button>
+    </section>
+
+    <section id="practiceIntroView" class="view hidden">
+      <div class="card hero"><span class="eyebrow">Practice</span><h2>Learn the controls</h2><p>Preview each pattern, then reproduce it in the input area. Practice results are not saved as study data.</p></div>
+      <div class="card instruction-list">
+        <p><b>Tap:</b> briefly touch the input area.</p>
+        <p><b>Swipe:</b> slide your finger to the right.</p>
+        <p><b>Retry:</b> if the pattern is not recognised, wait for the input area to reset and try again.</p>
+      </div>
+      <button id="startPracticeBtn" class="primary wide">Start practice</button>
+    </section>
+
+    <section id="transitionView" class="view hidden"></section>
+    <section id="studyView" class="view hidden">
+      <div class="progress"><div id="taskProgress" class="task-progress" aria-label="Task progress"></div></div>
+      <section class="card pattern-card">
+        <div><span id="patternCategory" class="eyebrow"></span><h2 id="patternName"></h2><p id="patternDescription"></p></div>
+        <button id="previewBtn" class="secondary">Preview pattern</button>
+      </section>
+      <section id="touchArea" class="touch-area" aria-label="Rhythm input area">
+        <div id="pulse" class="pulse"></div>
+        <div id="previewDemo" class="preview-demo hidden" aria-live="polite">
+          <p id="previewStatus">Get ready&hellip;</p>
+          <div id="demoTrail" class="demo-trail" aria-hidden="true"></div>
+          <div id="demoFinger" class="demo-finger" aria-hidden="true"></div>
+        </div>
+        <div class="touch-copy"><span>◎</span><h2>Perform the pattern here</h2><p>Tap or swipe. The system will check your attempt when you stop.</p></div>
+        <div id="eventTrail" class="event-trail"></div>
+        <div id="attemptActions" class="attempt-actions hidden">
+          <button id="tryAgainBtn" class="secondary hidden">Try again</button>
+          <button id="skipTrialBtn" class="danger hidden">Skip and continue</button>
+        </div>
+        <div id="timer" class="timer"></div>
+      </section>
+      <section class="card result" id="resultCard" aria-live="polite">
+        <div><span class="eyebrow">Result</span><h3 id="resultTitle">Ready</h3><p id="resultDetail">Preview the pattern, then perform it in the area above.</p></div>
+        <strong id="score">—</strong>
+      </section>
+      <button id="nextTrialBtn" class="primary wide hidden">Next task</button>
+    </section>
+
+    <section id="subBlockSurveyView" class="view hidden"></section>
+    <section id="blockSurveyView" class="view hidden"></section>
+    <section id="completeView" class="view hidden">
+      <div class="card hero">
+        <span class="success-mark">✓</span><span class="eyebrow">Study complete</span><h2>Thank you</h2>
+        <p>Your task, attempt, action, and questionnaire data have been saved. Please tell the researcher that you have finished.</p>
+        <button id="signOutBtn" class="secondary wide">Return to sign in</button>
+      </div>
+    </section>
+    <div id="visualFeedbackOverlay" class="feedback-overlay hidden" role="status" aria-live="assertive">
+      <div class="feedback-badge"><span id="visualFeedbackSymbol">✓</span></div>
+      <strong id="visualFeedbackLabel">Success</strong>
+    </div>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
